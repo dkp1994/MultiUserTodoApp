@@ -1,0 +1,23 @@
+{% extends "task/base.html" %}
+{% block content %}
+<div class="container">
+  <div class="col-lg-5 shadow p-0 mx-auto m-3">
+    <div class="alert alert-success">Creat Account</div>
+    <div class="p-4">
+        <form action="/signin/" method="post" novalidate>
+        {% csrf_token %}
+        {% for fm in form %}
+        <div class="form-group col-lg-6 mb-3">
+        {{fm.label_tag}} {{fm}}<small class="'text-danger"> {{fm.errors|striptags}}</small>
+        
+        </div>
+        {% endfor %}
+        
+        <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary mb-3">Submit</button>
+        </div>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

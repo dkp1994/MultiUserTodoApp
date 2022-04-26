@@ -1,0 +1,74 @@
+{% extends "task/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="row p-0 m-5">
+      <div class="col-lg-4 shadow mx-auto p-0">
+        <div class="alert alert-info">
+          <h2 class="text-center">Add New Todo {{user}}</h2>
+        </div>
+        <div class="p-4">
+          <form action="/add-todo/" method="post" novalidate>
+          {% csrf_token %}
+          {% for fm in form %}
+          <div class="form-group col-lg-6 mb-3">
+          {{fm.label_tag}} {{fm}}<small class="'text-danger"> {{fm.errors|striptags}}</small> 
+          </div>
+          {% endfor %}
+          <div class="col-12 mt-3">
+          <button type="submit" value='Add' class="btn btn-info mb-3">Add</button>
+          </div>
+          </form>
+      </div>
+      </div>
+      <div class="col">
+        <div class="'border">
+          {% if todos|length == 0 %}
+            <div class="alert alert-info">
+              <p class="display-5 text-center">No TODO</p>
+            </div>
+          {% else %}
+          <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                  {% for todo in todos %}
+                  <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{todo.title}}</td>
+                  <td>
+                    {% if todo.status == 'C' %}
+                    ✅
+                    {% else %}
+                    🕖
+                    {% endif %}
+                  </td>
+                  <td>{{todo.priority}}</td>
+                  <td>
+                    <a href="/delete-todo/{{todo.id}}" title="Delete">🗑️</a>
+                    {% if todo.status == 'P' %}
+                    <a href="/change-status/{{todo.id}}/C" title="Complete">✅</a>
+                    {% else %}
+                    <a href="/change-status/{{todo.id}}/P" title="Pending">🕖</a>
+                    {% endif %}
+                  </td>
+                </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div> 
+  </div>
+{% endblock %}
